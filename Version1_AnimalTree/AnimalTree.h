@@ -32,6 +32,9 @@ public:
 	// We need a positions function
 	// Which returns the positions of all nodes
 	// positions () const; <- example
+	
+	// void insert();
+	// void delete();
 
 private:
 	Node* root_;
