@@ -1,0 +1,2 @@
+Entity: inert entity, living being
+Inert entity: natural object, artefact
