@@ -23,11 +23,12 @@ public:
 	~AnimalTree() {};
 	Elem& operator*() const;
 	Node parent() const;
-	vector<Node> children() const;
+	vector<Node*> children(current_) const;
+	Node * FindFirstChild(current_) const;
+    	Node * FindLastChild(current_) const;
+    	Node * FindNthChild(int nth, current_) const;
 	int size(struct node* node) const;
 	bool empty() const {return size() ==0;};
-	bool isRoot() const;
-	bool isExternal() const;
 	Node root() const; //Get the root
 	// We need a positions function
 	// Which returns the positions of all nodes
@@ -35,30 +36,45 @@ public:
 
 private:
 	Node* root_;
+	Node* current_;
 	int size_;
 
 };
 
-int AnimalTree::size(struct node* node) const
+vector<Node*> Node::FindChildren(current_) const
 {
-	if(node==NULL)
-		return 0;
-	else
-		return(size(node->left) + 1 + size(node->right));
+    vector<Node*> children;
+    for(vector<Node*>::const_iterator it = children.begin(); it < children.end(); it++) 
+    {
+        if (current_.compare((*it)->current_) == 0)
+            children.push_back(*it);
+
+    }
+    return children;
 }
 
-bool AnimalTree::isRoot() const
+Node * Node::FindFirstChild(current_) const
 {
-	if(parent == NULL)
-		return 0;
-	else
-		return 1;
+    for(vector<Node*>::const_iterator it = children.begin(); it < children.end(); it++) 
+    {
+        if (current_.compare((*it)->current_) == 0)
+            return (*it);
+
+    }
+    return NULL;
 }
 
-bool AnimalTree::isExternal() const
+Node * Node::FindNthChild(int nth, current_) const
 {
-	if(children(NULL))
-		return 0;
-	else
-		return 1;
+    int n = 0;
+    for(vector<Node*>::const_iterator it = children.begin(); it < children.end(); it--) 
+    {
+        if (current_.compare((*it)->current_) == 0)
+        {
+            if (++n == nth)
+                return (*it);
+        }
+
+    }
+    return NULL;
 }
