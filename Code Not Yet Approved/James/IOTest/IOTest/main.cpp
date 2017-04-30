@@ -15,10 +15,7 @@ struct Node
 {
 	string name;
 	Node* parent;
-	vector<Node>* children;
-	vector<Node>& operator*() {return this;}
-	const vector<Node>& operator*() const { return this;}
-
+	vector<Node*> children;
 };
 
 void readIn(Node& root)
@@ -48,13 +45,35 @@ void readIn(Node& root)
 		if (mine != ':')
 			reader = reader + mine;
 	}
-	inFile.close();
+
 	cout << reader << endl;
 	root.name = reader;
 	root.parent = NULL;
-	Node tempNode;
-	vector<Node> tempVec;
-	root.children = *tempVec;
+	vector<Node*> tempVec;
+	reader.clear();
+
+
+	while (inFile.good() && mine != '\n')
+	{
+		Node* tempNode = new Node;
+		tempNode->parent = &root;
+		inFile.get(mine);
+		inFile.get(mine);
+		while (inFile.good() && mine != ',' && mine != '\n')
+		{	
+			reader = reader + mine;
+			inFile.get(mine);	
+		}
+
+		tempNode->name = reader;
+		cout << reader << endl;
+		cout << tempNode->name << endl;
+		reader.clear();
+		tempVec.push_back(tempNode);
+	}
+	inFile.close();
+	root.children = tempVec;
+	cout << root.children[0]->parent << endl;
 }
 
 void print()
@@ -66,13 +85,11 @@ void print()
 
 int main()
 {
-
-	Node testNode;
-	testNode.name = "hi";
-	cout << testNode.name << endl;
 	Node root;
 	readIn(root);
 	cout << root.name << endl;
+	cout << &root << endl;
+	cout << root.children[0]->name << endl;
 
 	system("pause");
 	return 0;
