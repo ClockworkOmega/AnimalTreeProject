@@ -1,0 +1,5 @@
+﻿  animalTree.cpp
+c:\users\james\documents\visual studio 2017\projects\animaltreeproject_v6\animaltreeproject_v6\animaltree.cpp(67): warning C4018: '<': signed/unsigned mismatch
+c:\users\james\documents\visual studio 2017\projects\animaltreeproject_v6\animaltreeproject_v6\animaltree.cpp(161): warning C4018: '<': signed/unsigned mismatch
+  AnimalTreeProject_v6.vcxproj -> c:\users\james\documents\visual studio 2017\Projects\AnimalTreeProject_v6\Debug\AnimalTreeProject_v6.exe
+  AnimalTreeProject_v6.vcxproj -> c:\users\james\documents\visual studio 2017\Projects\AnimalTreeProject_v6\Debug\AnimalTreeProject_v6.pdb (Partial PDB)
