@@ -35,9 +35,6 @@ public:
 	void insert(const Elem& searchVal, const Elem& val);		// Create a child for the current node
 	void search(const Elem& val);					// Find a node and set it to current
 
-	void printTree(Tree test);
-
-
 private:
 	Node* root_;
 	Node* current_;
