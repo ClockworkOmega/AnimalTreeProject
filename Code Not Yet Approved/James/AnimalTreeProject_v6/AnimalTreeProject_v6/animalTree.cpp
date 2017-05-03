@@ -153,28 +153,25 @@ void AnimalTree::insert(const Elem& searchVal, const Elem& insertVal)
 // Searches for a specific node in the tree
 Node* AnimalTree::searchNodeString(const Elem& val, Node* subtree)
 {
-
-	//Node* nodePtr = root_;
-
-	if (subtree != NULL && subtree->value != val)
-	{
-		for (int i = 0; i < subtree->child.size(); ++i)
-		{
-			searchNodeString(val, subtree = subtree->child[i]);
-		}
-	}
-
 	if (subtree->value == val)
 	{
 		cout << "The " << subtree->value << " node was found in the tree." << endl;
 		return subtree;
 	}
-	else
+
+	if (subtree == NULL)
 	{
-		cout << "The " << subtree->value << " node was not found in the tree." << endl;
-		subtree = NULL;
-		return subtree;
+		return NULL;
 	}
+
+	if (subtree != NULL && subtree->value != val)
+	{
+		for (int i = 0; i < subtree->child.size(); ++i)
+		{
+			searchNodeString(val, subtree->child[i]);
+		}
+	}
+	
 }
 
 // Sets the current pointer to a certain node
@@ -223,7 +220,7 @@ void AnimalTree::readIn(Node& root)
 	//once "\0" is reached, insert the the last string and stop reading that line.
 
 	fstream inFile;
-	inFile.open("txtTest.txt");
+	inFile.open("entities_hierarchy-1.txt");
 
 	if (inFile.fail())
 	{
@@ -244,6 +241,7 @@ void AnimalTree::readIn(Node& root)
 	cout << reader << endl;
 	root.value = reader;
 	root.parent = NULL;
+	root_ = &root;
 	vector<Node*> tempVec;
 	reader.clear();
 
@@ -259,14 +257,46 @@ void AnimalTree::readIn(Node& root)
 			reader = reader + mine;
 			inFile.get(mine);
 		}
-
-		tempNode->value = reader;
 		cout << reader << endl;
-		cout << tempNode->value << endl;
+		tempNode->value = reader;
 		reader.clear();
-		tempVec.push_back(tempNode);
+		root.child.push_back(tempNode);
 	}
+	
+
+	while (inFile.good())
+	{
+		while (inFile.good() && mine != ':')
+		{
+			inFile.get(mine);
+			if (mine != ':')
+				reader = reader + mine;
+		}
+		search(reader);
+		while (inFile.good() && mine != '\n')
+		{
+			Node* tempNode = new Node;
+			tempNode->parent = current_->parent;
+			inFile.get(mine);
+			inFile.get(mine);
+			while (inFile.good() && mine != ',' && mine != '\n')
+			{
+				reader = reader + mine;
+				inFile.get(mine);
+			}
+			cout << reader << endl;
+			tempNode->value = reader;
+			reader.clear();
+			tempVec.push_back(tempNode);
+		}
+		current_->child = tempVec;
+	}
+
+	//cout << reader << endl;
+	//root.value = reader;
+	//reader.clear();
+	
+
 	inFile.close();
 	root.child = tempVec;
-	cout << root.child[0]->value << endl;
 }
