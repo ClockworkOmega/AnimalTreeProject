@@ -153,35 +153,47 @@ void AnimalTree::insert(const Elem& searchVal, const Elem& insertVal)
 // Searches for a specific node in the tree
 Node* AnimalTree::searchNodeString(const Elem& val, Node* subtree)
 {
+
 	if (subtree->value == val)
 	{
-		cout << "The " << subtree->value << " node was found in the tree." << endl;
+		//cout << "The " << val << " node was found in the tree." << endl;	
 		return subtree;
 	}
 
-	if (subtree == NULL)
+	else if (subtree == NULL)
 	{
 		return NULL;
 	}
 
-	if (subtree != NULL && subtree->value != val)
+	else
 	{
 		for (int i = 0; i < subtree->child.size(); ++i)
 		{
-			searchNodeString(val, subtree->child[i]);
+			Node* result = searchNodeString(val, subtree->child[i]);
+			if (result != NULL)
+				return result;
 		}
+		return NULL;
 	}
-	
 }
 
 // Sets the current pointer to a certain node
 void AnimalTree::search(const Elem& val)
 {
 	Node* tmp;
-	current_ = root_;
-	tmp = searchNodeString(val, current_);
-	current_ = tmp;
+	tmp = searchNodeString(val, rootVal());
+
+	if (tmp != NULL)
+	{
+		current_ = tmp;
+	}
+	else
+	{
+		cout << "The value you were looking for was not found.\n\n";
+		return;
+	}
 }
+
 
 Node* AnimalTree::rootVal()
 {
@@ -218,6 +230,8 @@ void AnimalTree::readIn(Node& root)
 	//put the string up to : as the Node.name
 	//put each string following the : as an individual Node, each string seperated by the ,
 	//once "\0" is reached, insert the the last string and stop reading that line.
+
+	root_ = &root;
 
 	fstream inFile;
 	inFile.open("entities_hierarchy-1.txt");
@@ -273,6 +287,7 @@ void AnimalTree::readIn(Node& root)
 				reader = reader + mine;
 		}
 		search(reader);
+		reader.clear();
 		while (inFile.good() && mine != '\n')
 		{
 			Node* tempNode = new Node;
@@ -290,6 +305,7 @@ void AnimalTree::readIn(Node& root)
 			tempVec.push_back(tempNode);
 		}
 		current_->child = tempVec;
+		tempVec.clear();
 	}
 
 	//cout << reader << endl;
