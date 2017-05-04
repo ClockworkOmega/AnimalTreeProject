@@ -1,13 +1,27 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "testAnimalTree.h"
+#include <fstream>
+#include <stdlib.h>
+#include <time.h>
+#include "AnimalTree.h"
 
 
 // Return the size of the tree
 int AnimalTree::size() const
 {
 	return size_;
+}
+
+// Return the string value of the root
+Elem& AnimalTree::root() const
+{
+	return root_->value;
+}
+
+Node* AnimalTree::rootVal()
+{
+	return root_;
 }
 
 // Return true if the tree is empty
@@ -25,50 +39,73 @@ bool AnimalTree::empty() const
 void AnimalTree::currentNode() const
 {
 	cout << "The current string value of the node is: " << current_->value << endl;
-	cout << "The current node ID number is : " << current_->nodeID << endl;
 }
 
-// Return the string value and node ID of the root
-void AnimalTree::root() const
+
+
+// Return the string value of the parent node
+void AnimalTree::parent(const Elem& searchVal)
 {
-	cout << "The root string value of the node is: " << root_->value << endl;
-	cout << "The root node ID number is : " << root_->nodeID << endl;
+	search(searchVal);					// Search for the node by it's element
+
+	if (current_->value != searchVal)	// If it doesn't find the node tell the user
+	{
+		cout << "This node does not exist in the tree.\n\n";
+	}
+	else
+	{
+		if (current_->parent == NULL)				// Determine if the current node has any parents
+		{							// If it does not then tell the user 
+			cout << "This is the root node.\n\n";
+		}
+		else
+		{
+			Node* tmp = current_;					// Otherwise print the parent node
+			tmp = tmp->parent;
+			cout << "The string value of the parent of the current node is: " << tmp->value << endl;
+		}
+	}
 }
 
 // Return the string value
-// and the ID number of the parent node
-void AnimalTree::parent() const
-{
-	Node* tmp;
-	tmp = new(struct Node);
-	tmp = current_;
-	tmp->parent;
-	cout << "The string value of the parent of the current node is: " << tmp->value << endl;
-
-
-}
-
-// Return the string value and ID number
 // for each of the children of the current node
-void AnimalTree::children() const
+void AnimalTree::children(const Elem& searchVal)
 {
-	Node* tmp;
+	search(searchVal);					// Search for the node by it's element
 
-	for (int i = 0; i < current_->child.size(); ++i)
+	if (current_->value != searchVal)	// If it doesn't find the node tell the user
 	{
-		tmp = current_->child[i];
-		cout << "The string value of node number " << i << " is: " << tmp->value << endl;
-		cout << "The node ID for node number " << i << " is: " << tmp->nodeID << endl;
-		cout << endl << endl;
+		cout << "This node does not exist in the tree.\n\n";
+	}
+	else
+	{
+
+		if (current_->child.size() != 0)	// Otherwise if the parent node
+		{					// does have children then print them
+			Node* tmp;
+
+			for (int i = 0; i < current_->child.size(); ++i)
+			{
+				tmp = current_->child[i];
+				cout << "The string value of node number " << i << " is: " << tmp->value << endl;
+				cout << endl << endl;
+			}
+		}
+		else                              // If the node does not have children then it's a leaf
+		{											
+			cout << "The current node does not have an children. It is a leaf.\n\n";
+		}
 	}
 }
 
 // Returns true if the current node is a leaf
 // Else return false
-bool AnimalTree::isLeaf() const
+bool AnimalTree::isLeaf(const Elem& searchVal)
 {
-	if (current_->child.size() == NULL)
-		return true;
+	search(searchVal);				// Search for the node by it's element
+
+	if (current_->child.size() == NULL)		// Determine if the current node
+		return true;				// is a leaf or not
 	else
 		return false;
 }
@@ -76,10 +113,13 @@ bool AnimalTree::isLeaf() const
 // Return true if the current node 
 // is the root of the tree
 // else return false
-bool AnimalTree::isRoot() const
+bool AnimalTree::isRoot(const Elem& searchVal) 
 {
-	if (current_->parent == NULL)
-		return true;
+	search(searchVal);			// Search for the node by its element
+
+
+	if (current_->parent == NULL)		// Return whether the current node
+		return true;			// is the root node or not
 	else
 		return false;
 }
@@ -93,8 +133,8 @@ void AnimalTree::addRoot(const Elem& content)
 		root_ = new(struct Node);
 		root_->parent = NULL;
 		root_->value = content;
-		size_++;
 		current_ = root_;
+		size_++;
 	}
 	else
 	{
@@ -103,29 +143,170 @@ void AnimalTree::addRoot(const Elem& content)
 }
 
 
-void AnimalTree::insert(const Elem& val)
+void AnimalTree::insert(const Elem& searchVal, const Elem& insertVal)
 {
+	// Find the parent node
+	search(searchVal);	// Search for the node pointer you want to find
 
-}
-
-// Searches for a specific node in the tree
-// and sets the current pointer to that node
-Node* AnimalTree::searchNodeString(const Elem& val, Node* subtree)
-{
-
-	//Step 1: set current to root
-	// Step 2: set current to equal the running of the function.
-
-	if (subtree->value == val || subtree->child.size() == 0)
+	if (current_->value != searchVal)
 	{
-		return subtree;
+		cout << "The insertion cannot be completed because the parent node "
+			 << "does not exist.\n\n";
 	}
 	else
 	{
-		for (int i = 0; i < subtree->value.size(); ++i)
-		{
-			subtree = subtree->child[i];
-			searchNodeString(val, subtree);
-		}
+		// Create a child and point the parent
+		// pointer to the parent
+		Node* newChild;					// Create a new node
+		newChild = new(struct Node);			// Allocate memory to the new node
+		newChild->parent = current_;			// Set new node parent pointer to current(parent) node
+		newChild->value = insertVal;			// Assign user value to the value of the new node
+		current_->child.push_back(newChild);
+		++size_;					// Increment the size for the new added node
+
+		cout << insertVal << " was inserted into the tree." << endl;
 	}
+}
+
+// Searches for a specific node in the tree
+Node* AnimalTree::searchNodeString(const Elem& val, Node* subtree)
+{
+
+	if (subtree->value == val)
+	{
+		//cout << "The " << val << " node was found in the tree." << endl;	
+		return subtree;
+	}
+
+	else if (subtree == NULL)
+	{
+		return NULL;
+	}
+
+	else 
+	{
+		for (int i = 0; i < subtree->child.size(); ++i)
+		{
+			Node* result = searchNodeString(val, subtree->child[i]);
+			if (result != NULL)
+				return result;
+		}
+		return NULL;
+	}
+}
+
+// Sets the current pointer to a certain node
+void AnimalTree::search(const Elem& val)
+{
+	Node* tmp;
+	tmp = searchNodeString(val, rootVal());
+
+	if (tmp != NULL)
+	{
+		current_ = tmp;
+	}
+	else
+	{
+		cout << "The value you were looking for was not found.\n\n";
+		return;
+	}
+}
+
+
+void AnimalTree::readIn(Node& root)
+{
+	//start by reading unitl :
+	//check the string toUpper compared to each Node.name toUpper
+	//if there is a match, add to that Node's vector. Else, the new string must be the root.
+	//put the string up to : as the Node.name
+	//put each string following the : as an individual Node, each string seperated by the ,
+	//once "\0" is reached, insert the the last string and stop reading that line.
+
+	fstream inFile;
+	inFile.open("txtTest.txt");
+
+	if (inFile.fail())
+	{
+		cout << "You done goofed." << endl;
+		system("pause");
+		exit(1);
+	}
+	cout << "File opened." << endl;
+	string reader;
+	char mine = 'a';
+	while (inFile.good() && mine != ':')
+	{
+		inFile.get(mine);
+		if (mine != ':')
+			reader = reader + mine;
+	}
+
+	cout << reader << endl;
+	root.value = reader;
+	root.parent = NULL;
+	vector<Node*> tempVec;
+	reader.clear();
+
+
+	while (inFile.good() && mine != '\n')
+	{
+		Node* tempNode = new Node;
+		tempNode->parent = &root;
+		inFile.get(mine);
+		inFile.get(mine);
+		while (inFile.good() && mine != ',' && mine != '\n')
+		{
+			reader = reader + mine;
+			inFile.get(mine);
+		}
+
+		tempNode->value = reader;
+		cout << reader << endl;
+		cout << tempNode->value << endl;
+		reader.clear();
+		tempVec.push_back(tempNode);
+	}
+	inFile.close();
+	root.child = tempVec;
+	cout << root.child[0]->parent << endl;
+}
+
+///////////////////////////////////////////////////////////////////////////
+///////////////////////FUNCTIONS FOR THE GAME//////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+
+Elem& AnimalTree::randomChild(const Elem& searchVal)
+{
+	srand((unsigned)time(NULL));								// Start the random seed generator
+
+	search(searchVal);											// Find the parent node
+
+	Node* tmp;
+	tmp = current_->child[rand() % current_->child.size()];		// Return a random child from the vector
+	return tmp->value;											// Return the string value
+}
+
+Elem& AnimalTree::checkSiblings(const Elem& searchVal)
+{
+	Node* tmp;
+	Elem noSiblingsLeft = "Empty";
+	search(searchVal);											// Search for a node
+
+	tmp = current_->parent;										// Then set temp to the parent of the node
+
+	for (int i = 0; i < current_->child.size(); ++i)			// Run a loop to find another sibling.
+	{															// If that sibling has already been checked
+		tmp = current_->child[i];								// use that sibling.
+		if (tmp->check != false)
+			return tmp->value;
+	}
+
+	return noSiblingsLeft;										// Otherwise all children have been used.
+}																// Go ahead and return noSiblingsLeft.		
+
+void AnimalTree::checkBool(const Elem& searchVal)
+{
+	search(searchVal);											// Search for a node
+
+	current_->check = true;										// Then change it's bool to true
 }
