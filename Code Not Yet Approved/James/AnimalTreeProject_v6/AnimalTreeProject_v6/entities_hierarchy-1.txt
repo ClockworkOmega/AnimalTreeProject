@@ -5,9 +5,10 @@ car: van, limousine, truck, hatchback, city car, roadster
 limousine: tank limo, hummer limo, Jacuzzi Limo, classic limo
 truck: mobil crane, dump truck, tank truck, tractor unit, log carrier, garbage truck, heavy hauler
 van: Beavertail, Box vanCar derived van, Curtainside
-natural object: rock, stone, sand, gravel, dust, air, water
+natural object: rock, stone, sand, gravel, dust, air, water, food
 living being: Protozoa, bacteria, chromista, plantae, fungi, animalia
 animalia: Choanoflagellata, Animal, Ctenophora, Porifera, Placozoa, Cnidaria, Bilateria, vertebrates
+Animal: pet
 vertebrates: fish, amphibian, reptile, bird, mammal
 mammal: eutherian, fossorial, metatherian, placental, prototherian, tusker
 placental: carnivore, herbivore
@@ -20,7 +21,7 @@ felis: felis attica, lunesis, cat
 cat: Abyssinian, Aegean, Balinese, Bambino, Bengal, British Longhair, Burmese, Burmilla, CaliforniaSpangled, Chantilly-Tiffany, Chartreux, Chausie, Cheetoh, ColorpointShorthair, CornishRex, Cymric, ManxLonghair, Cyprus, DevonRex, Donskoy, DonSphynx, DragonLi, Dwarfcat, EgyptianMau, EuropeanShorthair, ExoticShorthair, FoldExCat, CachorrodeGatoFoldEx, GermanRex, HavanaBrown, Highlander, Himalayan, ColorpointPersian, JapaneseBobtail, Javanese, KurilianBobtail, KhaoManee, Korat, KoreanBobtail, KornJa, KurilianBobtail, KurilIslandsBobtail, Japan, LaPerm, Lykoi, MaineCoon, Manx, MekongBobtail, Minskin, Munchkin, Nebelung, Napoleon, NorwegianForestCat, Ocicat, OjosAzules, OregonRex, OrientalBicolor, OrientalShorthair, Peterbald, Pixie-bob, Raas, Ragamuffin, Ragdoll, RussianBlue, RussianWhite, SamSawet, Savannah, ScottishFold, SelkirkRex, Serengeti, Serradepetit, Siamese, Siberian, Singapura, Snowshoe, Sokoke, Somali, Sphynx, Suphalak, Tonkinese, Toyger, TurkishAngora, TurkishVan
 canidae: dog, fox, jackal, wolf
 dog: barker, basenji, dalmatian, fido, hound, griffon, hunt, mutt, pooch, pug, doberman
-reptile:serpent, lizard, alligator, crocodile, turtle
+reptile: serpent, lizard, alligator, crocodile, turtle
 serpent: Angolan Dwarf Python, Armenian Viper, Aruba Island Rattlesnake, Ball Python, Black Milk Snake, Black Rat Snake, Black-headed Python, Black-speckled Palm-pitviper, Boelen's Python, Bolkar Viper,  Bornean Leaf-nosed Pitviper, Brazilian Rainbow Boa, Burmese Python, Caucasus Viper, Central American Bushmaster, Central Asian Cobra, Corn Snake, Dumeril's Boa, Eastern Diamondback Rattlesnake, Emerald Tree Boa, Fea's Viper, Grand Canyon Rattlesnake, reat Basin Gopher Snake, Green Anaconda, Green Tree Python, Jamaican Boa, King Cobra, Lataste's Viper, Leaf-nosed Viper, Madagascar Ground Boa, Madagascar Tree Boa, Massasauga Rattlesnake, Mexican Lance-headed Rattlesnake, Moorish Viper, Mt. Mang Pitviper, Northern Death Adder, Ocellate Mountain Viper, Osage Copperhead, Philippine Pitviper,Prairie Kingsnake, Red-tailed Boa Constrictor, Reticulated Python, Ridgenosed Rattlesnake, Rosy Boa, Sawu Python, Side-striped Palm-pitviper, Southern Twig Snake, Speckled Forest Pitviper, Stuart's Milk Snake, Szechwan Speckled Pitviper, Timber Rattlesnake, West African Gaboon Viper, Western Cottonmouth, Western Pygmy Rattlesnake, Yangtze Mamushi, Yellow-blotched Palm-pitviper
 lizard: Agamas, Chameleons, Collared and leopard lizards, Iguanas, Phrynosomatidae, Anoles, Casquehead lizards, Curly-tailed lizards, Geckos
 turtle: Tortoises, Pond turtles, Cheloniidae, Dermochelyidae, Chelydridae, Kinosternidae, Softshells 
