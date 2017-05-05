@@ -1,0 +1,73 @@
+
+void QuizPartTwo(AnimalTree animals);
+void compQuestion(AnimalTree animals, int counter, string computerGuess, int numOfGuesses);
+
+int main()
+{
+  
+  AnimalTree tree;
+ 
+  cout<<"Welcome to the 2nd part of the Tree guessing game!"<<endl; 
+  
+  cout<<endl;
+  
+  cout<<"I'm going to pick an animal and I bet you can't guess it within 5 tries."<<endl;
+  
+  QuizPartTwo(tree);
+   
+  
+
+   return 0;
+
+}
+
+void QuizPartTwo(AnimalTree animals)
+{
+	int counter = 0;
+	const int NUM_OF_GUESSES = 5;
+	
+	compQuestion(animals, counter, animals.search(animal), NUM_OF_GUESSES);
+}
+
+void compQuestion(AnimalTree animals, int counter, string computerGuess, int numOfGuesses)
+{
+	string userAnswer;
+
+	if (computerGuess == "Empty")			// If the user runs out of node siblings, end the game
+	{
+		cout << "There are no other categories to choose from.\n\n"
+			 << "There's no possible way to guess your answer.\n\n";
+	}
+	else if (counter == numOfGuesses)		// If the computer runs out of guesses, end the game
+	{
+		cout << "The computer has run out of guesses "
+			 << " and lost the game. You win!\n\n";
+	}
+	else
+	{
+		// Ask the user yes or no on the computer quess
+		do {
+			cout << "Is it a " << computerGuess << "?\n\n";
+			cin >> userAnswer;
+		} while (userAnswer != "Yes" || userAnswer != "yes" ||
+			userAnswer != "No" || userAnswer != "no");
+
+		// If the computer guesses right and it's the final answer then it wins
+		if (userAnswer == "Yes" || userAnswer == "yes" && animals.isLeaf(computerGuess) == true)
+		{
+			cout << "The computer has guessed your answer and it won!\n\n";
+		}
+		// Else if it's right continue to the children of that node
+		else if (userAnswer == "Yes" || userAnswer == "yes")
+		{
+			counter++;
+			compQuestion(animals, counter, animals.randomChild(computerGuess), numOfGuesses);
+		}
+		else  // Else if the user says no then check a sibling of the guess
+		{
+			animals.checkBool(computerGuess);
+			counter++;
+			compQuestion(animals, counter, animals.checkSiblings(computerGuess), numOfGuesses);
+		}
+	}
+}

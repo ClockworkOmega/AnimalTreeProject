@@ -1,0 +1,87 @@
+Node* AnimalTree::reset(const Elem& val, Node* subtree)
+{
+    
+	//if (subtree->value == val)
+	//{
+		//cout << "The " << val << " node was found in the tree." << endl;	
+		//return subtree;
+	//}
+
+	if (subtree == NULL)
+	{
+		
+		return NULL;
+	}
+
+	else 
+	{
+		for (int i = 0; i < subtree->child.size(); ++i)
+		{
+			Node* result = searchNodeString(val, subtree->child[i]);
+			subtree->bool = false;
+			if (result != NULL)
+				return result;
+		}
+		return NULL;
+	}
+}
+
+void AnimalTree::resetNode()
+{
+	Node* tmp;
+	Elem& val = "You can't find me";
+	tmp = searchNodeString(val, rootVal());
+
+	if (tmp != NULL)
+	{
+		current_ = tmp;
+	}
+	else
+	{
+		cout << "All nodes have been reset."<<endl;
+		return;
+	}
+}
+
+
+//////////////////////
+///Functions for 2nd part of game 
+//////////////////////
+
+Elem& AnimalTree::randomChild(const Elem& searchVal)
+{
+	srand((unsigned)time(NULL));								// Start the random seed generator
+
+	search(searchVal);											// Find the parent node
+
+	Node* tmp;
+	tmp = current_->child[rand() % current_->child.size()];		// Return a random child from the vector
+	return tmp->value;											// Return the string value
+}
+
+
+Elem& AnimalTree::checkSiblings(const Elem& searchVal)
+{
+	Node* tmp;
+	Elem noSiblingsLeft = "Empty";
+	search(searchVal);											// Search for a node
+
+	tmp = current_->parent;										// Then set temp to the parent of the node
+
+	for (int i = 0; i < current_->child.size(); ++i)			// Run a loop to find another sibling.
+	{															// If that sibling has already been checked
+		tmp = current_->child[i];								// use that sibling.
+		if (tmp->check != false)
+			return tmp->value;
+	}
+
+	return noSiblingsLeft;										// Otherwise all children have been used.
+}
+
+
+void AnimalTree::checkBool(const Elem& searchVal)
+{
+	search(searchVal);											// Search for a node
+
+	current_->check = true;										// Then change it's bool to true
+}
