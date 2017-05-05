@@ -14,6 +14,7 @@ struct Node
 	Elem value;
 	Node* parent;
 	vector<Node*> child;
+	bool check;
 };
 
 class AnimalTree
@@ -26,9 +27,10 @@ public:
 	void children(const Elem& searchVal);			// Return string value of each node in current
 	int size() const;						// Return size of tree
 	bool empty() const;						// Return true if empty
-	Node root() const;						// Get the root string value
-	bool isLeaf() const;					// Return true if current node is a leaf
-	bool isRoot() const;					// Return true if current node is root
+	Elem& root() const;						// Get the root string value
+	bool isLeaf(const Elem& searchVal);					// Return true if current node is a leaf
+	bool isRoot(const Elem& searchVal);					// Return true if current node is root
+	Node rootPtr() { return *root_; }
 
 	Node* searchNodeString(const Elem& val, Node* subtree);				// Search for a particular node by it's string value
 	void addRoot(const Elem& val);										// Add a root node to the tree
@@ -42,6 +44,12 @@ public:
 	// TEST FUNCTIONS
 	void testSearch(const Elem& val);
 	void childSize(const Elem& val);
+
+	// Functions for Game
+	Elem& randomChild(const Elem& searchVal);					// Find a parent node and pick one of its children
+	Elem& checkSiblings(const Elem& searchVal);					// Find an unused sibling of the current node
+	void checkBool(const Elem& searchVal);						// Change a node's bool to true
+
 
 private:
 	Node* root_;

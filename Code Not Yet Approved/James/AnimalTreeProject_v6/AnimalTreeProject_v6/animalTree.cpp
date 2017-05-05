@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <time.h>
 #include "animalTree.h"
 
 
@@ -29,9 +30,9 @@ void AnimalTree::currentNode() const
 }
 
 // Return the string value of the root
-Node AnimalTree::root() const
+Elem& AnimalTree::root() const
 {
-	return *root_;
+	return root_->value;
 }
 
 // Return the string value of the parent node
@@ -79,10 +80,12 @@ void AnimalTree::children(const Elem& searchVal)
 
 // Returns true if the current node is a leaf
 // Else return false
-bool AnimalTree::isLeaf() const
+bool AnimalTree::isLeaf(const Elem& searchVal)
 {
-	if (current_->child.size() == NULL)
-		return true;
+	search(searchVal);				// Search for the node by it's element
+
+	if (current_->child.size() == NULL)		// Determine if the current node
+		return true;				// is a leaf or not
 	else
 		return false;
 }
@@ -90,10 +93,13 @@ bool AnimalTree::isLeaf() const
 // Return true if the current node 
 // is the root of the tree
 // else return false
-bool AnimalTree::isRoot() const
+bool AnimalTree::isRoot(const Elem& searchVal)
 {
-	if (current_->parent == NULL)
-		return true;
+	search(searchVal);			// Search for the node by its element
+
+
+	if (current_->parent == NULL)		// Return whether the current node
+		return true;			// is the root node or not
 	else
 		return false;
 }
@@ -253,9 +259,8 @@ void AnimalTree::readIn(Node& root)
 	}
 
 	cout << reader << endl;
-	root.value = reader;
-	root.parent = NULL;
-	root_ = &root;
+	root_->value = reader;
+	root_->parent = NULL;
 	vector<Node*> tempVec;
 	reader.clear();
 
@@ -263,7 +268,7 @@ void AnimalTree::readIn(Node& root)
 	while (inFile.good() && mine != '\n')
 	{
 		Node* tempNode = new Node;
-		tempNode->parent = &root;
+		tempNode->parent = root_;
 		inFile.get(mine);
 		inFile.get(mine);
 		while (inFile.good() && mine != ',' && mine != '\n')
@@ -274,7 +279,7 @@ void AnimalTree::readIn(Node& root)
 		cout << reader << endl;
 		tempNode->value = reader;
 		reader.clear();
-		root.child.push_back(tempNode);
+		root_->child.push_back(tempNode);
 	}
 	
 
@@ -291,7 +296,7 @@ void AnimalTree::readIn(Node& root)
 		while (inFile.good() && mine != '\n')
 		{
 			Node* tempNode = new Node;
-			tempNode->parent = current_->parent;
+			tempNode->parent = current_;
 			inFile.get(mine);
 			inFile.get(mine);
 			while (inFile.good() && mine != ',' && mine != '\n')
@@ -314,5 +319,44 @@ void AnimalTree::readIn(Node& root)
 	
 
 	inFile.close();
-	root.child = tempVec;
+}
+
+///////////////////////////////////////////////////////////////////////////
+///////////////////////FUNCTIONS FOR THE GAME//////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+
+Elem& AnimalTree::randomChild(const Elem& searchVal)
+{
+	srand((unsigned)time(NULL));								// Start the random seed generator
+
+	search(searchVal);											// Find the parent node
+
+	Node* tmp;
+	tmp = current_->child[rand() % current_->child.size()];		// Return a random child from the vector
+	return tmp->value;											// Return the string value
+}
+
+Elem& AnimalTree::checkSiblings(const Elem& searchVal)
+{
+	Node* tmp;
+	Elem noSiblingsLeft = "Empty";
+	search(searchVal);											// Search for a node
+
+	tmp = current_->parent;										// Then set temp to the parent of the node
+
+	for (int i = 0; i < current_->child.size(); ++i)			// Run a loop to find another sibling.
+	{															// If that sibling has already been checked
+		tmp = current_->child[i];								// use that sibling.
+		if (tmp->check != false)
+			return tmp->value;
+	}
+
+	return noSiblingsLeft;										// Otherwise all children have been used.
+}																// Go ahead and return noSiblingsLeft.		
+
+void AnimalTree::checkBool(const Elem& searchVal)
+{
+	search(searchVal);											// Search for a node
+
+	current_->check = true;										// Then change it's bool to true
 }
